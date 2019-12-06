@@ -1,0 +1,22 @@
+nav li{
+    float: left;
+    list-style: none;
+    display: block;
+    background-color: blueviolet;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 15px;
+}
+nav li a{
+    text-decoration: none;
+}
+nav {
+    background-color: blueviolet;
+    width: 100%;
+    overflow: auto;
+}
+nav li:hover{
+    list-style: none;
+    background-color: aqua;
+    text-transform: uppercase;
+    transition: 0.8s;
+}
