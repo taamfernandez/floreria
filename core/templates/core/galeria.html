@@ -1,0 +1,23 @@
+{% extends 'core/base.html '%}
+
+{% load static %}
+{% block contenido %}
+  <div class="contenedor_flores">
+  <h2 class="titulo_contenedor_flores">Galeria de Flores</h2>
+  {% for f in lista %}
+  <div class="flores">
+    <h3>{{f.nombre}} </h3>
+    {% if f.imagen %}
+    <img src="{{f.imagen.url}}" height="50%" width="50%">
+    <p>{{f.descripcion}}</p>
+    <p>Estado: {{f.estado}}</p> 
+    <p>Stock: {{f.stock}}</p>
+    {% endif %}
+    <a href="{% url 'agregar-carrito' f.nombre %}">Agregar Carrito</a>
+  </div>
+  {% endfor %}
+  <hr>
+  <h1>{{msg}}</h1>
+</div>
+
+{% endblock contenido %}

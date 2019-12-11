@@ -1,0 +1,42 @@
+{% extends 'core/base.html '%}
+
+{% load static %}
+
+
+
+{% block contenido %}
+
+{% block javascript %}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="{% static 'core/js/confirmacion.js' %}"></script>
+
+{% endblock %}
+
+<h2>Listado  de Flores</h2>
+<table>
+    <tr>
+    <th>Nombre</th>
+    <th>Valor</th>
+    <th>Descripcion</th>
+    <th>Estado</th>
+    <th>Stock</th>
+    <th>Opciones</th>
+    </tr>
+
+    {% for f in flores %}
+    <tr>
+            <td>{{ f.nombre }}</td>
+            <td>{{ f.valor }}</td>
+            <td>{{ f.descripcion }}</td>
+            <td>{{ f.estado }}</td>
+            <td>{{ f.stock }}</td>
+            <td>
+                <a href="{% url 'modificar-flores' f.id %}">modificar</a>
+                <a href="#" onclick="confirmarEliminacion({{f.id}})">eliminar</a>
+            </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
