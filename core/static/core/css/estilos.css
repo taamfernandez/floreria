@@ -1,22 +1,125 @@
-nav li{
-    float: left;
-    list-style: none;
-    display: block;
-    background-color: blueviolet;
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 15px;
+*{
+    margin: 0;
+    padding: 0;
 }
-nav li a{
-    text-decoration: none;
+
+body {
+    background-color:white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    transition: all 0.5s;
 }
 nav {
-    background-color: blueviolet;
+    width: auto;
+    float:right;
+}
+
+nav > ul > li { 
+    display: inline-block;
+    margin-left:30px;    
+    padding:30px 20px;
+
+}
+nav > ul > li:hover {
+    background-color:rosybrown;
+}
+
+nav > ul > li > a {
+    color: black;
+    text-decoration: none;
+}
+
+.logo{
+    width:15%;
+}
+
+#banner {
+  width: 100%;
+  margin-bottom: 25px;
+  margin-top: 15px;
+}
+
+#banner img{
     width: 100%;
-    overflow: auto;
+    height: 100%;
 }
-nav li:hover{
-    list-style: none;
-    background-color: aqua;
-    text-transform: uppercase;
-    transition: 0.8s;
+
+.contenedor_flores {
+    width: 90%;
+    background-color: 	#D85074;
+    min-height: 400px;
+    height: auto;
+    margin:auto;
 }
+
+.flores {
+    width: 200px;
+    height: 350px;
+    border-top: 15px solid #b5121c;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 30px;
+    margin-left:30px;
+    overflow: hidden;
+    text-align: center;
+}
+.flores p{
+    font-weight: bold;
+}
+
+.flores > img {
+    width: 200px;
+    transition: all 0.5s;
+}
+
+.flores > img:hover {
+    transform: scale(1.1);
+}
+
+.flores > a {
+    background-color:#b5121c;
+    color:white;
+    text-decoration: none;
+    display: block;
+    padding:10px 55px;
+    border-radius: 0 0 5px 5px;
+    margin-top: 10px;
+}
+
+.titulo_contenedor_flores {
+    color:#444343;
+    text-align: center;
+}
+
+/*MEDIA QUERY PARA TELEFONOS*/
+@media (max-width:767px) {
+
+    nav {
+        float:none;
+    }
+
+    header {
+        height: auto;
+    }
+
+    nav > ul > li {
+        display: block;
+        margin:0;
+        text-align: center;
+    }
+    nav > ul > li:hover {
+        background-color:rosybrown;
+    }
+
+    .logo {
+        margin:auto;
+        display: block;
+        width: 40%;
+    }
+}
+
