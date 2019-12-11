@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,50 +7,59 @@
     {% load static %}
     <link href="{% static 'core/css/estilos.css' %}" type="text/css" rel="stylesheet">
     <link rel="icon" type="image/png" href="img/icono.png">
-    <title>Home | Florería Pétalos</title>
+    <title>Florería Pétalos</title>
 
 </head>
-
 <body>
     <header>
-
-        <img src="{% static 'core/img/floreria.png' %}" alt="Logo" class="logo">
+      
+        <img src="{% static 'core/img/floreria.png' %}"  alt="Logo" class="logo">
 
         <nav>
-            <ul>
-                <li>
-                    <a href="{% url 'home' %}">Home</a>
-                </li>
-
-                <li>
-                    <a href="{% url 'logout' %}">Cerrar sesión</a>
-                </li>
-                <li>
-                    <a href="{% url 'registrar' %}">Registrar</a>
-                </li>
-                <li>
-                    <a href="{% url 'login' %}">Login</a>
-                </li>
-                <li>
-                    <a href="{% url 'galeria' %}">Flores</a>
-                </li>
-                <li>
-                    <a href="{% url 'carrito' %}">Carrito</a>
-                </li>
-            </ul>
+                <ul><li>
+                        <a href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'galeria' %}">Flores</a>
+                    </li> 
+                    <li>
+                        <a href="{% url 'registro_usuario' %}">Registrar</a>
+                    </li>                      
+                    <li>
+                        <a href="{% url 'login' %}">Login</a>
+                    </li> 
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="#">Usuario: {{ user.username }} </a>
+                    </li>  
+                    {% if request.user.is_staff %}
+                    <li>
+                        <a href="{% url 'nueva-flor' %}">Agregar Flor</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'listado-flores' %}">Listado Flores</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'listado-flores' %}">Modificar Flor</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'listado-flores' %}">Eliminar Flor</a>
+                    </li>
+                    {% endif %}  
+                    <li>
+                        <a href="{% url 'logout' %}">Cerrar sesión</a>
+                    </li> 
+                    {% endif %}
+                </ul>   
         </nav>
-
+        
     </header>
+    
 
+   
+   {% block contenido %}
 
-    <div id="banner">
-        <img src="{% static 'core/img/flor2.png' %}" alt="banner" class="banner">
-    </div>
-
-    {% block contenido %}
-
-    {% endblock %}
+   {% endblock %}
 
 </body>
-
 </html>

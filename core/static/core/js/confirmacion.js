@@ -1,4 +1,5 @@
 function confirmarEliminacion(id) {
+
     Swal.fire({
         title: '¿Estás seguro?',
         text:"No podras volver atrás",

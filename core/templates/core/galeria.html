@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block contenido %}
-  <div class="contenedor_flores">
+<div class="contenedor_flores">
   <h2 class="titulo_contenedor_flores">Galeria de Flores</h2>
   {% for f in lista %}
   <div class="flores">
@@ -13,11 +13,9 @@
     <p>Estado: {{f.estado}}</p> 
     <p>Stock: {{f.stock}}</p>
     {% endif %}
-    <a href="{% url 'agregar-carrito' f.nombre %}">Agregar Carrito</a>
+    <button type="submit">Agregar Carrito</button>
   </div>
   {% endfor %}
-  <hr>
-  <h1>{{msg}}</h1>
 </div>
 
-{% endblock contenido %}
+{% endblock %}
