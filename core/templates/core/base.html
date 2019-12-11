@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link href="{% static 'core/css/estilos.css' %}" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/icono.png">
+    <title>Home | Florería Pétalos</title>
+
+</head>
+
+<body>
+    <header>
+
+        <img src="{% static 'core/img/floreria.png' %}" alt="Logo" class="logo">
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'logout' %}">Cerrar sesión</a>
+                </li>
+                <li>
+                    <a href="{% url 'registrar' %}">Registrar</a>
+                </li>
+                <li>
+                    <a href="{% url 'login' %}">Login</a>
+                </li>
+                <li>
+                    <a href="{% url 'galeria' %}">Flores</a>
+                </li>
+                <li>
+                    <a href="{% url 'carrito' %}">Carrito</a>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+
+
+    <div id="banner">
+        <img src="{% static 'core/img/flor2.png' %}" alt="banner" class="banner">
+    </div>
+
+    {% block contenido %}
+
+    {% endblock %}
+
+</body>
+
+</html>
