@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block contenido %}
-<div class="contenedor_flores">
+<div class="container">
   <h2 class="titulo_contenedor_flores">Galeria de Flores</h2>
   {% for f in lista %}
   <div class="flores">
@@ -12,10 +12,10 @@
     <p>{{f.descripcion}}</p>
     <p>Estado: {{f.estado}}</p> 
     <p>Stock: {{f.stock}}</p>
+    <p>$: {{f.valor}}</p>
     {% endif %}
-    <button type="submit">Agregar Carrito</button>
+    <button type="button" class="btn btn-outline-danger">Agregar al Carrito</button>
   </div>
   {% endfor %}
 </div>
-
 {% endblock %}

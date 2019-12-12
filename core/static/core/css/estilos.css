@@ -5,7 +5,7 @@
 
 body {
     background-color:white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Titillium Web', sans-serif; 
 }
 
 header {
@@ -13,21 +13,31 @@ header {
     height: 80px;
     background-color: white;
     transition: all 0.5s;
+    font-family: 'Titillium Web', sans-serif;
+
 }
 nav {
     width: auto;
     float:right;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+
+h2{
+    text-align: center;
+    color: #D85074;
+    font-family: 'Playball', cursive;
 }
 
 nav > ul > li { 
     display: inline-block;
+    text-decoration: none;
     margin-left:30px;    
     padding:30px 20px;
+    font-family: 'Titillium Web', sans-serif;
+}
 
-}
-nav > ul > li:hover {
-    background-color:rosybrown;
-}
+
 
 nav > ul > li > a {
     color: black;
@@ -41,7 +51,7 @@ nav > ul > li > a {
 #banner {
   width: 100%;
   margin-bottom: 25px;
-  margin-top: 15px;
+  margin-top: 65px;
 }
 
 #banner img{
@@ -55,12 +65,13 @@ nav > ul > li > a {
     min-height: 400px;
     height: auto;
     margin:auto;
+    font-family: 'Titillium Web', sans-serif;
+
 }
 
 .flores {
     width: 200px;
-    height: 350px;
-    border-top: 15px solid #b5121c;
+    height: 500px;
     border-radius: 5px;
     display: inline-block;
     margin-top: 30px;
@@ -82,18 +93,32 @@ nav > ul > li > a {
 }
 
 .flores > a {
-    background-color:#b5121c;
+    background-color:#D85074;
     color:white;
     text-decoration: none;
     display: block;
     padding:10px 55px;
     border-radius: 0 0 5px 5px;
     margin-top: 10px;
+    font-family: 'Titillium Web', sans-serif;
+
 }
 
 .titulo_contenedor_flores {
-    color:#444343;
     text-align: center;
+    color: #D85074;
+    font-family: 'Playball', cursive;
+}
+
+h3{
+    text-align: center;
+    color: black;
+    font-family: 'Playball', cursive;
+}
+.container{
+    margin-bottom: 25px;
+    margin-top: 65px;
+    font-family: 'Titillium Web', sans-serif;
 }
 
 /*MEDIA QUERY PARA TELEFONOS*/
@@ -119,7 +144,8 @@ nav > ul > li > a {
     .logo {
         margin:auto;
         display: block;
-        width: 40%;
+        width: 55%;
+        position: relative;
     }
 }
 
