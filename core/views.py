@@ -4,7 +4,51 @@ from .forms import FlorForm, CustomUserForm
 from django.contrib.auth.decorators import login_required, permission_required 
 from django.contrib.auth import login, authenticate
 
+#rest_frameworl¿k
+
+from rest_framework import viewsets
+from .serializers import FlorSerializer
+
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+
+from django.http import HttpResponse, HttpResponseBadRequest
+
+from django.core import serializers
+import json
+
+from fcm_django.models import FCMDevice
+
 # Create your views here.
+@csrf_exempt
+@require_http_methods(['POST'])
+def guardar_token(request):
+        body = request.body.decode('utf-8')
+        bodyDict = json.loads(body)
+
+        token = bodyDict['token']
+
+        existe = FCMDevice.objects.filter(registration_id = token, active=True)
+
+        if len(existe) > 0:
+                return HttpResponseBadRequest(json.dumps({'mensaje':'el token ya existe'}))
+
+        dispositivo = FCMDevice()
+        dispositivo.registration_id = token
+        dispositivo.active = True
+
+        #solo si el usuario esta autenticado
+        if request.user.is_authenticated:
+                dispositivo.user = request.user
+        
+        try: 
+                dispositivo.save()
+                return HttpResponse(json.dumps({'mensaje':'token guardado'}))
+        except:
+                return HttpResponseBadRequest(json.dumps({'mensaje':'no se ha podido guardar'}))
+
+
+
 def home(request):
         data = {
                'flores':Flor.objects.all() 
@@ -35,6 +79,15 @@ def nueva_flor(request):
                 formulario= FlorForm(request.POST, files=request.FILES)
                 if formulario.is_valid():
                     formulario.save()
+
+                #primero obtenemos todos los dispositivos
+                    dispositivo = FCMDevice.objects.filter(active=True)
+                    dispositivo.send_message(
+                            title="Flor agregada!!!",
+                            body="Se ha agregado: " + formulario.cleaned_data['nombre']
+                    )
+
+
                     data['mensaje'] = "Guardado correctamente"         
         return render(request, 'core/nueva_flor.html', data)
 
@@ -75,3 +128,6 @@ def registro_usuario(request):
 
         return render(request, 'registration/registrar.html', data)
          
+class FlorViewSet(viewsets.ModelViewSet):
+        queryset = Flor.objects.all() 
+        serializer_class = FlorSerializer

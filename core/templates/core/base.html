@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load pwa %}
+    {% progressive_web_app_meta %}
+
     {% load static %}
     <link href="{% static 'core/css/estilos.css' %}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -14,6 +17,97 @@
     <link rel="icon" type="image/png" href="img/icono.png">
     <title>Florería Pétalos</title>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBYdNgB6IL05qJIOI7T7eQCfETWeaR8-5Q",
+            authDomain: "floreria-534f0.firebaseapp.com",
+            databaseURL: "https://floreria-534f0.firebaseio.com",
+            projectId: "floreria-534f0",
+            storageBucket: "floreria-534f0.appspot.com",
+            messagingSenderId: "370082663539",
+            appId: "1:370082663539:web:d15339c234de0c07c56e06"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        let messaging = firebase.messaging();
+        //
+        navigator.serviceWorker
+            .register('./serviceworker.js')
+            .then(function (register) {
+
+                messaging.useServiceWorker(register);
+                //
+                messaging.requestPermission()
+                    .then(function () {
+                        console.log("El usuario ha aceptado recibir notificaciones")
+
+                        return messaging.getToken();
+                    })
+                    .then(function (token) {
+                        console.log(token);
+
+                        //enviaremos el token hacia django para guardar en la base de datos
+
+                        fetch('guardar-token/', {
+                            method: 'post',
+                                headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                'token': token
+                            })
+                        })
+                    .then(function (resultado) {
+                        console.log("se ha guardado el token")
+                    })
+                    .catch(function(e){
+                        console.log("no se ha podido guardar el token")
+                    })
+
+            })
+            .catch(function (e) {
+                console.log("El usuario no ha aceptado")
+            })    
+            })
+        //programar notificaciones push
+
+        messaging.onMessage(function (payload) {
+            console.log("ha llegado la notificacion")
+
+            let data = payload;
+            console.log(data);
+
+            let title = payload.notification.title;
+
+            let options = {
+                body:payload.notification.body,
+                icon: payload.notification.icon,
+            }
+
+            let mensaje = new Notification(title, options);
+
+        });
+
+
+
+
+
+    </script>
+
+
+
+
+
 </head>
 
 <body>
@@ -21,35 +115,35 @@
 
         <img src="{% static 'core/img/floreria.png' %}" alt="Logo" class="logo">
 
-        <nav>
+        <nav class="navbar-nav ml-auto">
             <ul>
-                <li>
-                    <a href="{% url 'home' %}" class="nav-item nav-link" >Home</a>
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
                 </li>
-                <li>
-                    <a href="{% url 'galeria' %}" class="nav-item nav-link" >Flores</a>
+                <li class="nav-item">
+                    <a href="{% url 'galeria' %}" class="nav-item nav-link">Flores</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li>
-                    <a href="#" class="nav-item nav-link" >Usuario: {{ user.username }} </a>
+                <li class="nav-item">
+                    <a href="#" class="nav-item nav-link">Usuario: {{ user.username }} </a>
                 </li>
                 {% if request.user.is_staff %}
-                <li>
-                    <a href="{% url 'nueva-flor' %}" class="nav-item nav-link" >Agregar Flor</a>
+                <li class="nav-item">
+                    <a href="{% url 'nueva-flor' %}" class="nav-item nav-link">Agregar Flor</a>
                 </li>
-                <li>
-                    <a href="{% url 'listado-flores' %}" class="nav-item nav-link" >Listar/Modificar/Eliminar Flores</a>
+                <li class="nav-item">
+                    <a href="{% url 'listado-flores' %}" class="nav-item nav-link">Listar/Modificar/Eliminar Flores</a>
                 </li>
                 {% endif %}
-                <li>
-                    <a href="{% url 'logout' %}" class="nav-item nav-link" >Cerrar sesión</a>
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-item nav-link">Cerrar sesión</a>
                 </li>
                 {% else %}
-                <li>
-                    <a href="{% url 'registro_usuario' %}" class="nav-item nav-link" >Registrar</a>
+                <li class="nav-item">
+                    <a href="{% url 'registro_usuario' %}" class="nav-item nav-link">Registrar</a>
                 </li>
-                <li>
-                    <a href="{% url 'login' %}" class="nav-item nav-link" >Login</a>
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
                 </li>
                 {% endif %}
             </ul>
@@ -57,12 +151,106 @@
 
     </header>
 
-
     <div class="container">
         {% block contenido %}
 
         {% endblock %}
     </div>
 </body>
+<!-- Footer -->
+<footer class="page-footer font-small teal pt-4">
+
+    <!-- Footer Text -->
+    <div class="container-fluid text-center text-md-left">
+
+        <!-- Grid row -->
+        <div class="row text-center d-flex justify-content-center pt-5 mb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-2 mb-3">
+                <h3 class="nav-item nav-link font-weight-bold">
+                    <a href="{% url 'galeria' %}">Rosas</a>
+                </h3>
+                <a href="{% url 'galeria' %}">
+                    <img src="{% static 'core/img/rosas3.jpg' %}" height="80%" width="100%">
+                </a>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-2 mb-3">
+                <h3 class="nav-item nav-link font-weight-bold">
+                    <a href="{% url 'galeria' %}">Tulipanes</a>
+                </h3>
+                <a href="{% url 'galeria' %}">
+                    <img src="{% static 'core/img/tulipanes3.jpg' %}" height="80%" width="100%">
+                </a>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-2 mb-3">
+                <h3 class="nav-item nav-link font-weight-bold color-black">
+                    <a href="{% url 'galeria' %}">Gerberas</a>
+                </h3>
+                <a href="{% url 'galeria' %}">
+                    <img src="{% static 'core/img/gerberas2.jpg' %}" height="80%" width="100%">
+                </a>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-2 mb-3">
+                <h3 class="nav-item nav-link font-weight-bold">
+                    <a href="{% url 'galeria' %}">Ramos</a>
+                </h3>
+                <a href="{% url 'galeria' %}">
+                    <img src="{% static 'core/img/ramo3.jpg' %}" height="80%" width="100%">
+                </a>
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row-->
+        <hr class="rgba-white-light" style="margin: 0 15%;">
+    </div>
+    <!-- Footer Text -->
+    <div class="container-fluid text-center text-md-left">
+
+        <!-- Grid row -->
+        <div class="row text-center d-flex justify-content-center t-5 mb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-2 mb-3">
+                <h4 class="text-uppercase font-weight-bold">¿Qué hacemos?</h4>
+                <p>Trabajamos distintos materiales naturales, distinguiendo sus formas, curvas y
+                    líneas.
+                    Además para lograr composiciones especiales y diferentes, utilizamos diversas técnicas orientales,
+                    cortes, pliegues, trabajo de masas y un cuidado uso del color.</p>
+                <div class="row text-center d-flex justify-content-center t-5 mb-3">
+                    <a>
+                        <h4 class="text-uppercase font-weight-bold">Ubicación</h4>
+                        <img src="{% static 'core/img/ubicacion.png' %}" height=300px width=500px>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Grid row-->
+        <hr class="rgba-white-light" style="margin: 0 15%;">
+    </div>
+    <!-- Grid row -->
+
+    </div>
+    <!-- Footer Text -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <a>Todos los derechos reservados.</a>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
 
 </html>

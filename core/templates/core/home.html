@@ -1,5 +1,8 @@
 {% extends 'core/base.html '%}
 
+{% load pwa %}
+{% progressive_web_app_meta %}
+
 {% load static %}
 {% block contenido %}
 <div id="banner"> 
@@ -7,4 +10,6 @@
     <img src="{% static 'core/img/banner1.png' %}"  alt="banner" class="banner">
 
 </div>
+
+
 {% endblock %}

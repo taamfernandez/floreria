@@ -28,6 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '826344021127651'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'dd6e96795ccda4ab50a60a9d1c5723f7'
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
@@ -42,6 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'crispy_forms',
+    'rest_framework',
+    'social_django',
+    'pwa',
+    'fcm_django',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -54,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'floreria.urls'
@@ -69,6 +79,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
+
             ],
         },
     },
@@ -133,8 +146,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #la ruta en donde quedan almacenada las imagenes
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')
 
-STATIC_URL = "/static/"
-
-
+FCM_DJANGO_SETTINGS = {
+        "APP_VERBOSE_NAME": "floreria",
+         # default: _('FCM Django')
+        "FCM_SERVER_KEY": "AIzaSyBYdNgB6IL05qJIOI7T7eQCfETWeaR8-5Q",
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        "ONE_DEVICE_PER_USER": False,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        "DELETE_INACTIVE_DEVICES": True,
+}

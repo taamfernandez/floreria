@@ -1,5 +1,8 @@
 {% extends 'core/base.html '%}
 
+{% load pwa %}
+{% progressive_web_app_meta %}
+
 {% load static %}
 {% block contenido %}
 <body>
@@ -15,6 +18,7 @@
             <input type="submit" value="Login" class="btn btn-outline-danger">
             <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
         </form>
+        <a href="{% url 'social:begin' 'facebook' %}">Login con facebook</a>
     </div>
 
 </body>
