@@ -41,7 +41,7 @@
         let messaging = firebase.messaging();
         //
         navigator.serviceWorker
-            .register('./serviceworker.js')
+            .register('/serviceworker.js')
             .then(function (register) {
 
                 messaging.useServiceWorker(register);
@@ -59,7 +59,7 @@
 
                         fetch('guardar-token/', {
                             method: 'post',
-                                headers: {
+                            headers: {
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json'
                             },
@@ -67,17 +67,17 @@
                                 'token': token
                             })
                         })
-                    .then(function (resultado) {
-                        console.log("se ha guardado el token")
-                    })
-                    .catch(function(e){
-                        console.log("no se ha podido guardar el token")
-                    })
+                            .then(function (resultado) {
+                                console.log("se ha guardado el token")
+                            })
+                            .catch(function (e) {
+                                console.log("no se ha podido guardar el token")
+                            })
 
-            })
-            .catch(function (e) {
-                console.log("El usuario no ha aceptado")
-            })    
+                    })
+                    .catch(function (e) {
+                        console.log("El usuario no ha aceptado")
+                    })
             })
         //programar notificaciones push
 
@@ -90,64 +90,56 @@
             let title = payload.notification.title;
 
             let options = {
-                body:payload.notification.body,
+                body: payload.notification.body,
                 icon: payload.notification.icon,
             }
 
             let mensaje = new Notification(title, options);
 
         });
-
-
-
-
-
     </script>
-
-
-
-
-
 </head>
-
 <body>
-    <header>
+    <header id="header-index">
+        <div class="menu">
+            <div class="contenedor" id="contenedor-menu">
+                <img src="{% static 'core/img/floreria.png' %}" alt="Logo" class="logo">
 
-        <img src="{% static 'core/img/floreria.png' %}" alt="Logo" class="logo">
-
-        <nav class="navbar-nav ml-auto">
+        <nav>
             <ul>
-                <li class="nav-item">
-                    <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
+                <li>
+                    <a href="{% url 'home' %}">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'galeria' %}" class="nav-item nav-link">Flores</a>
+                <li>
+                    <a href="{% url 'galeria' %}">Flores</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a href="#" class="nav-item nav-link">Usuario: {{ user.username }} </a>
+                <li>
+                    <a href="#">Usuario: {{ user.username }} </a>
                 </li>
                 {% if request.user.is_staff %}
-                <li class="nav-item">
-                    <a href="{% url 'nueva-flor' %}" class="nav-item nav-link">Agregar Flor</a>
+                <li>
+                    <a href="{% url 'nueva-flor' %}">Agregar Flor</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'listado-flores' %}" class="nav-item nav-link">Listar/Modificar/Eliminar Flores</a>
+                <li>
+                    <a href="{% url 'listado-flores' %}">Listar/Modificar/Eliminar Flores</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="nav-item nav-link">Cerrar sesión</a>
+                <li>
+                    <a href="{% url 'logout' %}">Cerrar sesión</a>
                 </li>
                 {% else %}
-                <li class="nav-item">
-                    <a href="{% url 'registro_usuario' %}" class="nav-item nav-link">Registrar</a>
+                <li>
+                    <a href="{% url 'registro_usuario' %}">Registrar</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+                <li>
+                    <a href="{% url 'login' %}">Login</a>
                 </li>
                 {% endif %}
             </ul>
         </nav>
+    </div>
+    </div>
 
     </header>
 
@@ -156,7 +148,27 @@
 
         {% endblock %}
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $(window).scroll(function() {
+                scroll = $(window).scrollTop();
+                if (scroll > 100) {
+
+                }
+            })
+            $('.menu-icon').click(function() {
+                $('header nav').slideToggle();
+            })
+        })
+    </script>
 </body>
+
+
+
+
 <!-- Footer -->
 <footer class="page-footer font-small teal pt-4">
 
@@ -222,11 +234,6 @@
 
             <!-- Grid column -->
             <div class="col-md-2 mb-3">
-                <h4 class="text-uppercase font-weight-bold">¿Qué hacemos?</h4>
-                <p>Trabajamos distintos materiales naturales, distinguiendo sus formas, curvas y
-                    líneas.
-                    Además para lograr composiciones especiales y diferentes, utilizamos diversas técnicas orientales,
-                    cortes, pliegues, trabajo de masas y un cuidado uso del color.</p>
                 <div class="row text-center d-flex justify-content-center t-5 mb-3">
                     <a>
                         <h4 class="text-uppercase font-weight-bold">Ubicación</h4>
@@ -251,6 +258,4 @@
 
 </footer>
 <!-- Footer -->
-
-
 </html>

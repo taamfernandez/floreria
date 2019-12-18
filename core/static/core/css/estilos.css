@@ -130,24 +130,41 @@ h3{
     margin-top: 65px;
     font-family: 'Titillium Web', sans-serif;
 }
+.menu{
+
+    position: fixed;
+    width: 100%;    
+    top: 0;
+    z-index: 100;
+    background: #fff;
+}
 
 /*MEDIA QUERY PARA TELEFONOS*/
 @media (max-width:767px) {
 
-    nav {
-        float:none;
+    .menu{
+        position: relative;
+        width: 100%;    
+        text-align: center;
+        top: 0;
+        z-index: 100;
+        background: #fff;
     }
-
+    .menu a{
+        display: block;
+        margin: 50px;
+        top:40px;
+    }
     header {
         height: auto;
-    }
 
-    nav > ul > li {
+    } 
+    .menu > ul > li {
         display: block;
         margin:0;
         text-align: center;
     }
-    nav > ul > li:hover {
+    .menu > ul > li:hover {
         background-color:rosybrown;
     }
 

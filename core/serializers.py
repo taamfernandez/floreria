@@ -5,4 +5,4 @@ class FlorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Flor
-        fields = ['nombre', 'valor', 'descripcion', 'estado', 'stock','imagen']
+        fields = ['id','nombre', 'valor', 'descripcion', 'estado', 'stock','imagen']

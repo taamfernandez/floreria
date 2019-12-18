@@ -16,6 +16,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 
 from django.core import serializers
 import json
+import requests
 
 from fcm_django.models import FCMDevice
 
@@ -53,6 +54,11 @@ def home(request):
         data = {
                'flores':Flor.objects.all() 
         }
+        if 'carro' not in request.session:
+                request.session['carro'] = []
+        
+        carro = request.session['carro'] 
+
         return render(request, 'core/home.html')
 
 def galeria(request):
@@ -63,10 +69,13 @@ def galeria(request):
 
 @permission_required('core.view_flor')
 def listado_flores(request):
-        flores = Flor.objects.all()
+        response = requests.get('http://localhost:8000/api/flores/')
+        flores=response.json()
         data = {
                 'flores':flores
         }
+        carro = request.session['carro']
+        print(carro)
         return render(request, 'core/listado_flores.html', data)
 
 @permission_required('core.add_flor')
@@ -80,16 +89,10 @@ def nueva_flor(request):
                 if formulario.is_valid():
                     formulario.save()
 
-                #primero obtenemos todos los dispositivos
-                    dispositivo = FCMDevice.objects.filter(active=True)
-                    dispositivo.send_message(
-                            title="Flor agregada!!!",
-                            body="Se ha agregado: " + formulario.cleaned_data['nombre']
-                    )
-
 
                     data['mensaje'] = "Guardado correctamente"         
         return render(request, 'core/nueva_flor.html', data)
+
 
 @permission_required('core.change_flor')
 def modificar_flores(request, id):
@@ -107,8 +110,8 @@ def modificar_flores(request, id):
 
 @permission_required('core.delete_flor')
 def eliminar_flor(request, id):
-        flores = Flor.objects.get(id=id)
-        flores.delete()
+        
+        requests.delete("http://localhost:8000/api/flores/"+id+"/") 
         
         return redirect(to="listado-flores")      
 
@@ -127,6 +130,7 @@ def registro_usuario(request):
                     return redirect(to='home')
 
         return render(request, 'registration/registrar.html', data)
+
          
 class FlorViewSet(viewsets.ModelViewSet):
         queryset = Flor.objects.all() 
